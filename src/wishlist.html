@@ -50,6 +50,20 @@
   <!-- Wishlist container to display items -->
   <div class="wishlist-container" id="wishlist-container"></div>
 
+  <!-- Update Note Modal -->
+<div id="update-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-button" onclick="closeModal()">&times;</span>
+    <img id="modal-image" src="" alt="Product Image">
+    <h4 id="modal-name"></h4>
+    <p id="modal-price"></p>
+    <label for="modal-note">Edit Note:</label>
+    <textarea id="modal-note"></textarea>
+    <button onclick="saveNote()">Save</button>
+  </div>
+</div>
+
+
   <script src="main.js"></script>
 </body>
 </html>

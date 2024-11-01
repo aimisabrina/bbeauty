@@ -1,5 +1,5 @@
 // List of brands to fetch
-const brands = ["maybelline", "nyx", "Pacifica", "Dr. Hauschka", "loreal", "revlon","Almay","Milani", "smashbox", "covergirl", "marcelle", "clinique"];
+const brands = ["maybelline", "nyx", "Pacifica", "Dr. Hauschka", "loreal", "revlon", "Almay", "Milani", "smashbox", "covergirl", "marcelle", "clinique"];
 const productContainer = document.getElementById("product-container");
 const wishlistContainer = document.getElementById("wishlist-container");
 const searchBox = document.querySelector(".search-box input");
@@ -17,16 +17,20 @@ async function fetchProducts() {
       const products = await response.json();
       allProducts = allProducts.concat(products); // Add products to the allProducts array
     }
-    displayProducts(allProducts); // Display all fetched products
+    displayProducts(allProducts); // Display 60 random products
   } catch (error) {
     console.error("Error fetching products:", error);
   }
 }
 
-// Display products on the page
+// Display 60 random products on the page
 function displayProducts(products) {
   productContainer.innerHTML = ""; // Clear container before displaying products
-  products.forEach((product) => {
+  
+  // Randomly shuffle the products array and select the first 60 items
+  const selectedProducts = products.sort(() => 0.6 - Math.random()).slice(0, 60);
+  
+  selectedProducts.forEach((product) => {
     const productCard = document.createElement("div");
     productCard.classList.add("product-card");
     productCard.innerHTML = `
@@ -37,9 +41,8 @@ function displayProducts(products) {
         <p>Price: $${product.price}</p>
       </a>
       <button onclick="addToWishlist(${product.id}, '${product.name}', '${product.image_link}', ${product.price})">
-  Add to Wishlist
-</button>
-
+        Add to Wishlist
+      </button>
     `;
     productContainer.appendChild(productCard);
   });
@@ -61,44 +64,13 @@ searchBox.addEventListener("input", (event) => {
   filterProducts(searchTerm);
 });
 
-// Wishlist management
-let wishlist = [];
-
-// Add product to wishlist
-function addToWishlist(id, name) {
-  if (!wishlist.some((item) => item.id === id)) {
-    wishlist.push({ id, name });
-    displayWishlist();
-  }
-}
-
-// Display wishlist
-function displayWishlist() {
-  wishlistContainer.innerHTML = "";
-  wishlist.forEach((item, index) => {
-    const wishlistItem = document.createElement("div");
-    wishlistItem.classList.add("wishlist-item");
-    wishlistItem.innerHTML = `
-      <p>${item.name}</p>
-      <button onclick="removeFromWishlist(${index})">Remove</button>
-    `;
-    wishlistContainer.appendChild(wishlistItem);
-  });
-}
-
-// Remove product from wishlist
-function removeFromWishlist(index) {
-  wishlist.splice(index, 1);
-  displayWishlist();
-}
-
 // Initialize product display on page load
 fetchProducts();
 
-// Avoid redeclaration by checking if wishlist is already defined
-if (!window.wishlist) {
-  window.wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-}
+
+//WISHLIST ON INDEX.HTML
+// Wishlist management
+window.wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
 // Function to update the wishlist count in the navigation
 function updateWishlistCount() {
@@ -106,51 +78,57 @@ function updateWishlistCount() {
   if (wishlistCount) wishlistCount.textContent = window.wishlist.length;
 }
 
-// Function to show the pop-up message
-function showPopupMessage() {
-  const popup = document.getElementById("popup-message");
-  popup.classList.add("show");
-
-  setTimeout(() => {
-    popup.classList.remove("show");
-  }, 2000); // Show for 2 seconds
+// Show success pop-up message
+function showSuccessMessage() {
+  const successMessage = document.getElementById("success-message");
+  successMessage.classList.add("show");
+  setTimeout(() => successMessage.classList.remove("show"), 2000);
 }
 
-// Add product to wishlist with success pop-up and update icon
+// Add event to "Add to Wishlist" buttons on index page
 function addToWishlist(id, name, image, price) {
+  openWishlistPopup(id, name, image, price); // Open the wishlist popup with product details
+}
+
+// Function to open wishlist pop-up
+function openWishlistPopup(productId, productName, productImage, productPrice) {
+  window.selectedProduct = { id: productId, name: productName, image: productImage, price: productPrice };
+  document.getElementById("wishlist-popup").style.display = "flex";
+}
+
+// Function to close wishlist pop-up
+function closeWishlistPopup() {
+  document.getElementById("wishlist-popup").style.display = "none";
+}
+
+// Function to add product to wishlist with note
+function addToWishlistWithNote() {
+  const note = document.getElementById("wishlist-note").value;
+  const { id, name, image, price } = window.selectedProduct;
+
   if (!window.wishlist.some((item) => item.id === id)) {
-    window.wishlist.push({ id, name, image, price });
+    window.wishlist.push({ id, name, image, price, note });
     localStorage.setItem("wishlist", JSON.stringify(window.wishlist));
-    displayWishlist();
     updateWishlistCount();
-    showPopupMessage(); // Show the pop-up message
+    showSuccessMessage(); // Show success message
   } else {
     alert("Product is already in your wishlist.");
   }
+  
+  closeWishlistPopup();
+  document.getElementById("wishlist-note").value = ""; // Clear note input
 }
 
-function addToWishlist(id, name, image, price) {
-  // Check if the wishlist already contains the item
-  if (!window.wishlist.some((item) => item.id === id)) {
-    // Add item to wishlist
-    window.wishlist.push({ id, name, image, price });
-    // Save wishlist to localStorage
-    localStorage.setItem("wishlist", JSON.stringify(window.wishlist));
-    // Update the count display
-    updateWishlistCount();
-    // Show a success message if needed
-    showPopupMessage();
-  } else {
-    alert("Product is already in your wishlist.");
-  }
-}
 
+
+
+// WISHLIST.HTML
 // Display wishlist items in wishlist.html
 function displayWishlist() {
   const wishlistContainer = document.getElementById("wishlist-container");
   if (!wishlistContainer) return;
 
-  wishlistContainer.innerHTML = ""; // Clear container
+  wishlistContainer.innerHTML = ""; 
   window.wishlist.forEach((item, index) => {
     const wishlistItem = document.createElement("div");
     wishlistItem.classList.add("wishlist-item");
@@ -158,12 +136,15 @@ function displayWishlist() {
       <img src="${item.image}" alt="${item.name}">
       <h4>${item.name}</h4>
       <p>Price: $${item.price}</p>
+      <p1>Note: ${item.note}</p1>
       <button onclick="removeFromWishlist(${index})">Remove</button>
       <button onclick="updateWishlist(${index})">Update</button>
     `;
     wishlistContainer.appendChild(wishlistItem);
   });
 }
+
+// Load wishlist on page load
 function loadWishlist() {
   const wishlistContainer = document.getElementById("wishlist-container");
   wishlistContainer.innerHTML = ""; // Clear current items
@@ -177,7 +158,7 @@ function loadWishlist() {
       <img src="${item.image}" alt="${item.name}">
       <h4>${item.name}</h4>
       <p>Price: $${item.price}</p>
-      <p>Note: ${item.note}</p>
+      <p1>Note: ${item.note}</p1>
       <button onclick="removeFromWishlist('${item.id}')">Remove</button>
       <button onclick="updateWishlistItem('${item.id}')">Update</button>
     `;
@@ -205,10 +186,6 @@ function updateWishlist(index) {
     displayWishlist();
   }
 }
-function updateWishlistCount() {
-  const wishlistCount = document.getElementById("wishlist-count");
-  if (wishlistCount) wishlistCount.textContent = window.wishlist.length;
-}
 
 // Load products and wishlist count on page load
 document.addEventListener("DOMContentLoaded", () => {
@@ -217,45 +194,50 @@ document.addEventListener("DOMContentLoaded", () => {
   updateWishlistCount();
 });
 
+// UPDATE POPUP FUNCTION
+// Open the Update Modal
+function updateWishlist(index) {
+  // Get the item data
+  const item = window.wishlist[index];
 
+  // Set the modal content
+  document.getElementById("modal-image").src = item.image;
+  document.getElementById("modal-name").textContent = item.name;
+  document.getElementById("modal-price").textContent = `Price: $${item.price}`;
+  document.getElementById("modal-note").value = item.note;
 
-// Function to open wishlist pop-up
-function openWishlistPopup(productId, productName, productImage, productPrice) {
-  window.selectedProduct = { id: productId, name: productName, image: productImage, price: productPrice };
-  document.getElementById("wishlist-popup").style.display = "flex";
+  // Show the modal
+  const modal = document.getElementById("update-modal");
+  modal.style.display = "block";
+
+  // Store the index for the save function
+  window.currentEditIndex = index;
 }
 
-// Function to close wishlist pop-up
-function closeWishlistPopup() {
-  document.getElementById("wishlist-popup").style.display = "none";
-}
-
-// Function to add product to wishlist with note
-function addToWishlistWithNote() {
-  const note = document.getElementById("wishlist-note").value;
-  const { id, name, image, price } = window.selectedProduct;
-
-  if (!window.wishlist.some((item) => item.id === id)) {
-    window.wishlist.push({ id, name, image, price, note });
+// Save the updated note and close the modal
+function saveNote() {
+  const updatedNote = document.getElementById("modal-note").value;
+  if (updatedNote !== "") {
+    // Update the note in the wishlist array
+    window.wishlist[window.currentEditIndex].note = updatedNote;
+    // Save to localStorage
     localStorage.setItem("wishlist", JSON.stringify(window.wishlist));
-    updateWishlistCount();
-    showSuccessMessage();
-  } else {
-    alert("Product is already in your wishlist.");
+    // Refresh the displayed wishlist
+    displayWishlist();
+    // Close the modal
+    closeModal();
   }
-  
-  closeWishlistPopup();
-  document.getElementById("wishlist-note").value = ""; // Clear note input
 }
 
-// Show success pop-up message
-function showSuccessMessage() {
-  const successMessage = document.getElementById("success-message");
-  successMessage.classList.add("show");
-  setTimeout(() => successMessage.classList.remove("show"), 2000);
+// Close the modal
+function closeModal() {
+  document.getElementById("update-modal").style.display = "none";
 }
 
-// Add event to "Add to Wishlist" buttons on index page
-function addToWishlist(id, name, image, price) {
-  openWishlistPopup(id, name, image, price);
+// Close the modal when clicking outside of it
+window.onclick = function(event) {
+  const modal = document.getElementById("update-modal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
 }

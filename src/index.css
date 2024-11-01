@@ -10,10 +10,6 @@ ul{
 a{
   text-decoration: none;
 }
-
-
-
-
 /*NAVIGATION*/
 .navigation{
   display: flex;
@@ -86,8 +82,6 @@ a{
 .nav-btns a i{
   margin-top: 2px;
 }
-
-
 
 
 /*MAIN*/
@@ -219,9 +213,6 @@ a{
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-
-
-
 /* PRODUCT IMAGES */
 .product-images img.main-image {
   width: 300px;
@@ -300,40 +291,6 @@ a{
 }
 
 
-
-
-/* ADD TO CART STYLING */
-.add-to-cart {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-.add-to-cart label {
-  font-weight: 600;
-  color: #333;
-}
-.add-to-cart input[type="number"] {
-  width: 50px;
-  padding: 5px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  text-align: center;
-}
-.add-to-cart button {
-  background-color: #9d246d;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.2s ease;
-}
-.add-to-cart button:hover {
-  background-color: #f2a2a1;
-}
-
 /*WISHLIST PAGE*/
 /* Wishlist Container */
 .wishlist-container {
@@ -341,51 +298,80 @@ a{
   flex-direction: column;
   gap: 20px;
   padding: 20px;
-  max-width: 1200px;
+  max-width: 900px;
   width: 90%;
   margin: auto;
 }
 
-/* Wishlist Item Styling */
+/* WISHLIST PAGE */
 .wishlist-item {
   display: flex;
   align-items: center;
-  gap: 15px;
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 10px;
   background-color: #fff;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.453);
+  gap: 15px;
 }
 
+/* Image */
 .wishlist-item img {
   width: 80px;
   height: 80px;
   border-radius: 10px;
 }
 
-/* Text Content in Wishlist Item */
+/* Container for Product Details and Actions */
+.wishlist-item-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* Product Details (Name, Price, Note) */
+.wishlist-item-details {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
 .wishlist-item h4 {
   font-size: 1.2rem;
   color: #f31e97;
   margin: 0;
   font-weight: 600;
+  width: 200px; 
 }
 
 .wishlist-item p {
   font-size: 1rem;
   color: #666;
   margin: 5px 0;
+  width: 80px; 
 }
 
-/* Button Container within Wishlist Item */
+.wishlist-item p1 {
+  padding: 8px 15px;
+  border: none;
+  background-color: #fed2d1;
+  color: #f31e97;
+  border-radius: 10px;
+  font-size: 1rem;
+  margin: 5px 0;
+  box-shadow: 0px 4px 8px #f31e979a;
+  width: 200px; 
+}
+
+/* Button Container */
 .wishlist-item-buttons {
   display: flex;
-  gap: 10px;
-  margin-left: auto;
+  gap: 5px;
 }
 
-/* Update and Delete Buttons */
+/* Buttons */
 .wishlist-item button {
   padding: 8px 15px;
   border: none;
@@ -402,6 +388,7 @@ a{
 }
 
 
+
 /* POPUP WISHLIST */
 .wishlist-popup {
   position: fixed;
@@ -410,53 +397,132 @@ a{
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  display: flex; /* Change to flex to center content */
+  display: none;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 
 .wishlist-popup-content {
-  background: #ffd2e8; /* Match the main background color */
+  background: #ffd2e8; 
   padding: 20px;
-  border-radius: 15px; /* Slightly round the corners for a softer look */
-  width: 400px; /* Adjusted width for better fit */
+  border-radius: 15px; 
+  width: 400px; 
   text-align: center;
-  color: #9d246d; /* Consistent text color */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  color: #9d246d; 
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); 
 }
 
 .wishlist-popup-content h3 {
-  font-size: 1.5rem; /* Slightly larger font for the title */
-  margin-bottom: 15px; /* Space between title and form elements */
+  font-size: 1.5rem; 
+  margin-bottom: 15px; 
 }
 
 .wishlist-popup-content .form-group {
-  margin-bottom: 15px; /* Space between form fields */
+  margin-bottom: 15px; 
 }
 
 .wishlist-popup-content textarea {
   width: 100%;
   height: 80px;
-  border: 1px solid #ddd; /* Light border for input */
-  border-radius: 5px; /* Rounded corners */
-  padding: 10px; /* Padding for comfort */
-  margin-bottom: 15px; /* Space below textarea */
-  resize: none; /* Disable resizing */
+  border: 1px solid #ddd; 
+  border-radius: 5px; 
+  padding: 10px; 
+  margin-bottom: 15px; 
+  resize: none; 
 }
 
 .wishlist-popup-content button {
-  padding: 10px 15px; /* Comfortable button size */
+  padding: 10px 15px; 
   border: none;
-  background-color: #fed2d1; /* Consistent button color */
-  color: #9d246d; /* Text color */
-  border-radius: 20px; /* Match the button style */
+  background-color: #fed2d1; 
+  color: #9d246d; 
+  border-radius: 20px; 
   cursor: pointer;
   font-weight: 600;
-  transition: background-color 0.2s ease; /* Smooth hover effect */
+  transition: background-color 0.2s ease; 
 }
 
 .wishlist-popup-content button:hover {
-  background-color: #f2a2a1; /* Darken on hover */
+  background-color: #f2a2a1; 
 }
 
+/* UPDATE POPUP MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.modal-content {
+  background: #ffd2e8; 
+  margin: auto;
+  padding: 20px;
+  border-radius: 15px; 
+  width: 400px;
+  text-align: center;
+  color: #9d246d;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); 
+}
+
+.modal-content h3 {
+  font-size: 1.5rem; 
+  color: #9d246d; 
+  margin-bottom: 15px;
+}
+
+.modal-content img {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content p {
+  font-size: 1rem;
+  color: #666;
+  margin: 5px 0;
+}
+
+.modal-content textarea {
+  width: 100%;
+  height: 80px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 15px;
+  resize: none;
+}
+
+.modal-content button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #fed2d1;
+  color: #9d246d;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.modal-content button:hover {
+  background-color: #f2a2a1;
+}
+
+.close-button {
+  float: right;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #9d246d;
+  font-weight: bold;
+}
